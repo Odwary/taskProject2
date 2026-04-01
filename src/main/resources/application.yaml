@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: clients
+  datasource:
+    url: jdbc:postgresql://localhost:5433/clients
+    username: postgres
+    password: 2904
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+springdoc:
+  api-docs:
+    path: api-docs
+api:
+  server:
+    url: http://localhost:8080
+
