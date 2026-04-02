@@ -1,5 +1,6 @@
 package com.league.clients.web;
 
+import com.league.clients.dto.ErrorResponseDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
-
+//todo разделить ошибки
+//todo добавить логгирование
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponseDto> globalException(Exception e) {
+    public ResponseEntity<ErrorResponseDto> runTimeException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         new ErrorResponseDto(

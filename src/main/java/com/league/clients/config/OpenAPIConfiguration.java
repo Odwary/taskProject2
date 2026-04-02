@@ -1,4 +1,4 @@
-package com.league.clients.web;
+package com.league.clients.exception;
 
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import java.util.List;
-
+// todo сделать папку config
+//todo заменить environment на @value
 @Configuration
 public class OpenAPIConfiguration {
 

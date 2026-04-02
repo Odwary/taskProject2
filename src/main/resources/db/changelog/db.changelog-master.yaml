@@ -1,2 +1,5 @@
 databaseChangeLog:
-  - 
+   - include:
+       file: v1-create-table-client-account.sql
+   - include:
+       file: v1-insert-into-table-client-account.sql

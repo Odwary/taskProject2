@@ -1,8 +1,10 @@
 package com.league.clients;
 
+import com.league.clients.dto.ClientDto;
 import com.league.clients.dto.CreateClientDto;
 import com.league.clients.dto.FindClientsFilterDto;
-import com.league.clients.dto.ModifyClientDto;
+import com.league.clients.dto.UpdateClientDto;
+import com.league.clients.entity.ClientEntity;
 import com.league.clients.enums.ClientStatus;
 import com.league.clients.mapper.ClientMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-
+//todo переимновать package в exeption
+//todo добавить lombok и писать через аннотация @RAG
+//todo вынести логику логгирования в сервис
 @Service
 public class ClientsService {
     private final ClientsRepository repository;
@@ -22,14 +26,14 @@ public class ClientsService {
         this.mapper = mapper;
     }
 
-    public Client createClient(CreateClientDto request) {
+    public ClientDto createClient(CreateClientDto request) {
         var clientEntity = mapper.clientDtoToEntity(request);
         clientEntity.setStatus(ClientStatus.ACTIVE);
         repository.save(clientEntity);
         return mapper.toDomain(clientEntity);
     }
 
-    public List<Client> findAllClientsByFilter(FindClientsFilterDto filter) {
+    public List<ClientDto> findAllClientsByFilter(FindClientsFilterDto filter) {
         var pageSize = filter.pageSize() != null ? filter.pageSize() : 10;
         var pageNum = filter.pageNum() != null ? filter.pageNum() : 0;
         var pageable = Pageable.ofSize(pageSize).withPage(pageNum);
@@ -42,7 +46,7 @@ public class ClientsService {
         return clientEntities.stream().map(mapper::toDomain).toList();
     }
 
-    public Client findById(Long id) {
+    public ClientDto findById(Long id) {
         var clientEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(
                         String.format("no client with id %d", id)
                 )
@@ -56,7 +60,8 @@ public class ClientsService {
         repository.deleteById(id);
     }
 
-    public void updateClient(Long id, ModifyClientDto client) {
+    public void updateClient(Long id, UpdateClientDto client) {
+        //todo убрать возможность менять дату создания и передавать в updateClient сразу dto не раскладывая на params
         repository.findById(id).orElseThrow(() -> new EntityNotFoundException
                 (String.format("no client with id %d", id)));
         repository.updateClient(

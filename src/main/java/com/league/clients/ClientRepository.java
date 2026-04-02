@@ -1,5 +1,6 @@
 package com.league.clients;
 
+import com.league.clients.entity.ClientEntity;
 import com.league.clients.enums.ClientGender;
 import com.league.clients.enums.ClientStatus;
 import jakarta.transaction.Transactional;
