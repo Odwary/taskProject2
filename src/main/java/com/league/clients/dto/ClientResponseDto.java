@@ -5,8 +5,8 @@ import com.league.clients.enums.ClientStatus;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
-//todo отличие class от record
-public record ClientDto(
+
+public record ClientResponseDto(
         Long id,
         @NotNull
         String fullName,

@@ -4,16 +4,12 @@ import com.league.clients.enums.ClientGender;
 import com.league.clients.enums.ClientStatus;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.OffsetDateTime;
-
-public record ModifyClientDto(
+public record UpdateClientDto(
         @NotNull
         String fullName,
         @NotNull
         ClientGender gender,
         @NotNull
-        ClientStatus status,
-        @NotNull
-        OffsetDateTime createDttm
+        ClientStatus status
 ) {
 }

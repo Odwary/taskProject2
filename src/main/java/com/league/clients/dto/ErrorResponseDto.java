@@ -1,14 +1,12 @@
-package com.league.clients.web;
+package com.league.clients.dto;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record ErrorResponseDto(
-        //todo заменить string на enum / http.status
-        String message,
+        HttpStatusCode httpStatusCode,
         String detailedMessage,
-        LocalDateTime dateTime
+        Instant dateTime
 ) {
 }

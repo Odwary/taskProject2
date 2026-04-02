@@ -1,54 +1,83 @@
-package com.league.clients.web;
+package com.league.clients.exception;
 
 import com.league.clients.dto.ErrorResponseDto;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.NoSuchElementException;
-//todo разделить ошибки
-//todo добавить логгирование
+
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponseDto> runTimeException(RuntimeException e) {
+        log.error("Runtime exception: {} ", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         new ErrorResponseDto(
-                                "500",
+                                HttpStatus.INTERNAL_SERVER_ERROR,
                                 e.getMessage(),
-                                LocalDateTime.now()
+                                Instant.now()
                         )
                 );
     }
 
-    @ExceptionHandler({IllegalArgumentException.class,
-            MethodArgumentNotValidException.class})
-    public ResponseEntity<ErrorResponseDto> illegalArgumentException(Exception e) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDto> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.warn("MethodArgumentNotValidException exception: {} ", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         new ErrorResponseDto(
-                                "404",
+                                HttpStatus.BAD_REQUEST,
                                 e.getMessage(),
-                                LocalDateTime.now()
+                                Instant.now()
                         )
                 );
     }
 
-    @ExceptionHandler({NoSuchElementException.class,
-            EntityNotFoundException.class})
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponseDto> illegalArgumentException(IllegalArgumentException e) {
+        log.warn("IllegalArgumentException exception: {} ", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new ErrorResponseDto(
+                                HttpStatus.BAD_REQUEST,
+                                e.getMessage(),
+                                Instant.now()
+                        )
+                );
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ErrorResponseDto> noSuchElementException(Exception e) {
+        log.warn("NoSuchElementException exception: {} ", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(
                         new ErrorResponseDto(
-                                "404",
+                                HttpStatus.NOT_FOUND,
                                 e.getMessage(),
-                                LocalDateTime.now()
+                                Instant.now()
+                        )
+                );
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> entityNotFoundException(EntityNotFoundException e) {
+        log.warn("EntityNotFoundException exception: {} ", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(
+                        new ErrorResponseDto(
+                                HttpStatus.NOT_FOUND,
+                                e.getMessage(),
+                                Instant.now()
                         )
                 );
     }

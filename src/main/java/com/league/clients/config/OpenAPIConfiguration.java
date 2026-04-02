@@ -1,41 +1,37 @@
-package com.league.clients.exception;
+package com.league.clients.config;
 
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 import java.util.List;
-// todo сделать папку config
-//todo заменить environment на @value
+
 @Configuration
 public class OpenAPIConfiguration {
 
-    private final Environment environment;
-
-    public OpenAPIConfiguration(Environment environment) {
-        this.environment = environment;
-    }
-
     @Bean
-    public OpenAPI defineOpenAPI() {
-        Server server = new Server();
-        String serverUrl = environment.getProperty("api.server.url");
-        server.setUrl(serverUrl);
-        server.setDescription("Development");
+    public OpenAPI openAPI(@Value("${api.server.url:}") String serverUrl) {
+        OpenAPI openAPI = new OpenAPI()
+                .info(new Info()
+                        .title("Серверная часть для управления клиентами")
+                        .version("1.0")
+                        .description("API предоставляет эндпоинты для управления клиентами.")
+                        .contact(new Contact()
+                                .name("Viktor Grakov")
+                                .email("v1k7or@bk.ru")));
 
-        Contact contact = new Contact();
-        contact.setName("Viktor Grakov");
-        contact.setEmail("v1k7or@bk.ru");
+        if (!serverUrl.isBlank()) {
+            openAPI.setServers(List.of(
+                    new Server()
+                            .url(serverUrl)
+                            .description("API server")
+            ));
+        }
 
-        Info info = new Info();
-        info.title("Серверная часть для управления клиентами")
-                .version("1.0")
-                .description("Это API предоставляет эндпоинты для управления клиентами.")
-                .contact(contact);
-        return new OpenAPI().info(info).servers(List.of(server));
+        return openAPI;
     }
 }
