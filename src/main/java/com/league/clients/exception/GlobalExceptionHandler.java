@@ -17,8 +17,8 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponseDto> runTimeException(RuntimeException e) {
-        log.error("Runtime exception: {} ", e.getMessage());
+    public ResponseEntity<ErrorResponseDto> runtimeException(RuntimeException e) {
+        log.error("Error ", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         new ErrorResponseDto(
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.warn("MethodArgumentNotValidException exception: {} ", e.getMessage());
+        log.warn("MethodArgumentNotValidException exception:  ", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         new ErrorResponseDto(
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseDto> illegalArgumentException(IllegalArgumentException e) {
-        log.warn("IllegalArgumentException exception: {} ", e.getMessage());
+        log.warn("IllegalArgumentException exception: ", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         new ErrorResponseDto(
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ErrorResponseDto> noSuchElementException(Exception e) {
-        log.warn("NoSuchElementException exception: {} ", e.getMessage());
+        log.warn("NoSuchElementException exception: ", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(
                         new ErrorResponseDto(
@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> entityNotFoundException(EntityNotFoundException e) {
-        log.warn("EntityNotFoundException exception: {} ", e.getMessage());
+        log.warn("EntityNotFoundException exception:  ", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(
                         new ErrorResponseDto(

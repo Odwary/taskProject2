@@ -12,9 +12,11 @@ import java.util.List;
 
 @Configuration
 public class OpenAPIConfiguration {
+    @Value("${api.server.url}")
+    String serverUrl;
 
     @Bean
-    public OpenAPI openAPI(@Value("${api.server.url:}") String serverUrl) {
+    public OpenAPI openAPI() {
         OpenAPI openAPI = new OpenAPI()
                 .info(new Info()
                         .title("Серверная часть для управления клиентами")

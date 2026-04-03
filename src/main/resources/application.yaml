@@ -2,9 +2,9 @@ spring:
   application:
     name: clients
   datasource:
-    url: jdbc:postgresql://localhost:5433/clients
-    username: postgres
-    password: 2904
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none

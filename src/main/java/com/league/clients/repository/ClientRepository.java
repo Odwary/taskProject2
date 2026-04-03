@@ -1,7 +1,7 @@
-package com.league.clients;
+package com.league.clients.repository;
 
 import com.league.clients.dto.UpdateClientDto;
-import com.league.clients.entity.ClientEntity;
+import com.league.clients.entity.ClientAccountEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,18 +14,19 @@ import java.time.Instant;
 import java.util.List;
 
 @Repository
-public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
+public interface ClientRepository extends JpaRepository<ClientAccountEntity, Long> {
+
     @Query("""
-            select ce from ClientEntity ce
+            select ce from ClientAccountEntity ce
             """)
-    List<ClientEntity> findAllClientsByFilter(
+    List<ClientAccountEntity> findAllClientsByFilter(
             Pageable pageable
     );
 
     @Transactional
     @Modifying
     @Query("""
-            update ClientEntity ce
+            update ClientAccountEntity ce
             set
             ce.fullName = :#{#dto.fullName},
             ce.gender = :#{#dto.gender},

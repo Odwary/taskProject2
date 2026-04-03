@@ -1,15 +1,17 @@
-package com.league.clients;
+package com.league.clients.controller;
 
 import com.league.clients.dto.ClientResponseDto;
 import com.league.clients.dto.CreateClientDto;
 import com.league.clients.dto.FindClientsFilterDto;
 import com.league.clients.dto.UpdateClientDto;
+import com.league.clients.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,13 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/clients")
 public class ClientController {
-    private final ClientService clientsService;
 
-    public ClientController(ClientService service) {
-        this.clientsService = service;
-    }
+    private final ClientService clientsService;
 
     @Tag(name = "POST", description = "POST methods for clients")
     @Operation(summary = "Создать клиента",
@@ -41,8 +41,8 @@ public class ClientController {
     @PostMapping()
     public ResponseEntity<ClientResponseDto> createClient(@Parameter(description = "Объект CreateClientDto c полями fullName, gender",
             required = true) @Valid @RequestBody CreateClientDto request) {
-        ClientResponseDto clients = clientsService.createClient(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(clients);
+        ClientResponseDto client = clientsService.createClient(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 
     @Tag(name = "GET", description = "GET methods for clients")

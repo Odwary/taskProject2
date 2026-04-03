@@ -2,27 +2,30 @@ package com.league.clients.mapper;
 
 import com.league.clients.dto.ClientResponseDto;
 import com.league.clients.dto.CreateClientDto;
-import com.league.clients.entity.ClientEntity;
+import com.league.clients.entity.ClientAccountEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientMapper {
 
-
-    public ClientEntity clientDtoToEntity(CreateClientDto clientDto) {
+    public ClientAccountEntity clientDtoToEntity(CreateClientDto clientDto) {
         if (clientDto == null) return null;
-        ClientEntity clientEntity = new ClientEntity();
-        clientEntity.setFullName(clientDto.fullName());
-        clientEntity.setGender(clientDto.gender());
-        return clientEntity;
+        return ClientAccountEntity.builder()
+                .fullName(clientDto.fullName())
+                .gender(clientDto.gender())
+                .build();
     }
 
-    public ClientResponseDto toDomain(ClientEntity clientEntity) {
-        return new ClientResponseDto(clientEntity.getId(),
-                clientEntity.getFullName(),
-                clientEntity.getGender(),
-                clientEntity.getStatus(),
-                clientEntity.getCreateDttm(),
-                clientEntity.getModifyDttm());
+    public ClientResponseDto toClientResponseDto(ClientAccountEntity clientAccountEntity) {
+        if (clientAccountEntity == null) return null;
+        return ClientResponseDto.builder()
+                .id(clientAccountEntity.getId())
+                .fullName(clientAccountEntity.getFullName())
+                .gender(clientAccountEntity.getGender())
+                .status(clientAccountEntity.getStatus())
+                .createDttm(clientAccountEntity.getCreateDttm())
+                .modifyDttm(clientAccountEntity.getModifyDttm())
+                .build();
+
     }
 }
